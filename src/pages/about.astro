@@ -1,0 +1,158 @@
+---
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>About · Aicha on AI & Education</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <style>
+      :root {
+        --bg: #0f172a;
+        --surface: #1e293b;
+        --text: #f8fafc;
+        --text-muted: #94a3b8;
+        --accent: #38bdf8;
+        --border: rgba(148, 163, 184, 0.15);
+      }
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+      body {
+        font-family: 'Inter', sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        line-height: 1.8;
+        min-height: 100vh;
+      }
+      .site-header {
+        padding: 1.5rem;
+        border-bottom: 1px solid var(--border);
+        position: sticky;
+        top: 0;
+        background: rgba(15, 23, 42, 0.9);
+        backdrop-filter: blur(12px);
+        z-index: 100;
+      }
+      .header-inner {
+        max-width: 800px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .logo {
+        font-family: 'Playfair Display', serif;
+        font-size: 1.4rem;
+        font-weight: 700;
+        color: var(--text);
+        text-decoration: none;
+      }
+      .logo span { color: var(--accent); }
+      .nav-links a {
+        color: var(--text-muted);
+        text-decoration: none;
+        margin-left: 2rem;
+        font-size: 0.9rem;
+        font-weight: 500;
+        transition: color 0.2s;
+      }
+      .nav-links a:hover { color: var(--accent); }
+      .container {
+        max-width: 700px;
+        margin: 0 auto;
+        padding: 4rem 1.5rem;
+      }
+      .about-header {
+        margin-bottom: 3rem;
+      }
+      .about-header h1 {
+        font-family: 'Playfair Display', serif;
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+      }
+      .about-header p {
+        color: var(--text-muted);
+        font-size: 1.1rem;
+      }
+      .content-block {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 2rem;
+        margin-bottom: 1.5rem;
+      }
+      .content-block h2 {
+        font-size: 1.1rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+        color: var(--accent);
+      }
+      .content-block p {
+        color: var(--text-muted);
+        margin-bottom: 1rem;
+      }
+      .content-block p:last-child { margin-bottom: 0; }
+      .content-block ul {
+        color: var(--text-muted);
+        padding-left: 1.5rem;
+      }
+      .content-block li { margin-bottom: 0.5rem; }
+      .site-footer {
+        border-top: 1px solid var(--border);
+        padding: 2.5rem 1.5rem;
+        text-align: center;
+        color: var(--text-muted);
+        font-size: 0.85rem;
+      }
+      @media (max-width: 600px) {
+        .nav-links { display: none; }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="header-inner">
+        <a href="/" class="logo">Aicha<span>.</span></a>
+        <nav class="nav-links">
+          <a href="/">Articles</a>
+          <a href="/about">About</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="container">
+      <div class="about-header">
+        <h1>About</h1>
+        <p>AI-Driven Education Analyst focused on workforce transformation</p>
+      </div>
+
+      <div class="content-block">
+        <h2>Who I Am</h2>
+        <p>I am Aicha Marrhich, an AI-Driven Education Analyst. I synthesize research from leading institutions — NBER, arXiv, and beyond — to make complex AI trends actionable for educators, strategists, and professionals.</p>
+        <p>My work bridges the gap between academic research and practical workforce strategy.</p>
+      </div>
+
+      <div class="content-block">
+        <h2>What I Cover</h2>
+        <ul>
+          <li>AI's real impact on jobs and productivity</li>
+          <li>How education systems must adapt to technological shifts</li>
+          <li>Workforce strategy and talent development</li>
+          <li>The "seniority gradient" and early-career pathways</li>
+          <li>Growth-focused vs. cost-cutting AI implementation</li>
+        </ul>
+      </div>
+
+      <div class="content-block">
+        <h2>Connect</h2>
+        <p>Follow my research briefs here or connect with me on LinkedIn to discuss AI, education, and the future of work.</p>
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <p>© 2026 Aicha Marrhich · Built with Astro</p>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,207 @@
+---
+const posts = Object.values(import.meta.glob('./blog/*.md', { eager: true }));
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Aicha on AI & Education</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <style>
+      :root {
+        --bg: #0f172a;
+        --surface: #1e293b;
+        --text: #f8fafc;
+        --text-muted: #94a3b8;
+        --accent: #38bdf8;
+        --border: rgba(148, 163, 184, 0.15);
+      }
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+      body {
+        font-family: 'Inter', sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        line-height: 1.7;
+        min-height: 100vh;
+      }
+      .site-header {
+        padding: 1.5rem;
+        border-bottom: 1px solid var(--border);
+        position: sticky;
+        top: 0;
+        background: rgba(15, 23, 42, 0.9);
+        backdrop-filter: blur(12px);
+        z-index: 100;
+      }
+      .header-inner {
+        max-width: 800px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .logo {
+        font-family: 'Playfair Display', serif;
+        font-size: 1.4rem;
+        font-weight: 700;
+        color: var(--text);
+        text-decoration: none;
+      }
+      .logo span { color: var(--accent); }
+      .nav-links a {
+        color: var(--text-muted);
+        text-decoration: none;
+        margin-left: 2rem;
+        font-size: 0.9rem;
+        font-weight: 500;
+        transition: color 0.2s;
+      }
+      .nav-links a:hover { color: var(--accent); }
+      .hero {
+        padding: 5rem 1.5rem 3rem;
+        text-align: center;
+        max-width: 700px;
+        margin: 0 auto;
+      }
+      .hero h1 {
+        font-family: 'Playfair Display', serif;
+        font-size: clamp(2.2rem, 5vw, 3.5rem);
+        line-height: 1.15;
+        margin-bottom: 1rem;
+      }
+      .hero p {
+        color: var(--text-muted);
+        font-size: 1.15rem;
+        max-width: 500px;
+        margin: 0 auto;
+      }
+      .hero-badge {
+        display: inline-block;
+        background: rgba(56, 189, 248, 0.1);
+        color: var(--accent);
+        padding: 0.4rem 1rem;
+        border-radius: 100px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        margin-bottom: 1.5rem;
+      }
+      .container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 0 1.5rem 4rem;
+      }
+      .section-title {
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        color: var(--text-muted);
+        margin-bottom: 1.5rem;
+        padding-bottom: 0.75rem;
+        border-bottom: 1px solid var(--border);
+      }
+      .post-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 2rem;
+        margin-bottom: 1.5rem;
+        transition: all 0.3s ease;
+      }
+      .post-card:hover {
+        transform: translateY(-3px);
+        border-color: rgba(56, 189, 248, 0.3);
+        box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+      }
+      .post-card a {
+        color: var(--text);
+        text-decoration: none;
+      }
+      .post-meta {
+        color: var(--text-muted);
+        font-size: 0.8rem;
+        margin-bottom: 0.75rem;
+      }
+      .post-card h2 {
+        font-size: 1.35rem;
+        font-weight: 700;
+        margin-bottom: 0.75rem;
+        transition: color 0.2s;
+      }
+      .post-card:hover h2 { color: var(--accent); }
+      .post-desc {
+        color: var(--text-muted);
+        font-size: 0.95rem;
+      }
+      .post-tags {
+        margin-top: 1.25rem;
+        display: flex;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+      }
+      .tag {
+        background: var(--bg);
+        color: var(--text-muted);
+        padding: 0.3rem 0.8rem;
+        border-radius: 6px;
+        font-size: 0.78rem;
+        font-weight: 500;
+        border: 1px solid var(--border);
+      }
+      .site-footer {
+        border-top: 1px solid var(--border);
+        padding: 2.5rem 1.5rem;
+        text-align: center;
+        color: var(--text-muted);
+        font-size: 0.85rem;
+      }
+      @media (max-width: 600px) {
+        .hero { padding: 3rem 1.5rem 2rem; }
+        .post-card { padding: 1.5rem; }
+        .nav-links { display: none; }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="header-inner">
+        <a href="/" class="logo">Aicha<span>.</span></a>
+        <nav class="nav-links">
+          <a href="/">Articles</a>
+          <a href="/about">About</a>
+        </nav>
+      </div>
+    </header>
+
+    <section class="hero">
+      <div class="hero-badge">AI-Driven Education Analyst</div>
+      <h1>Exploring how AI reshapes learning and work</h1>
+      <p>Research briefs and insights on workforce transformation, productivity, and the future of education.</p>
+    </section>
+
+    <main class="container">
+      <div class="section-title">Latest Articles</div>
+      {posts.sort((a: any, b: any) => new Date(b.frontmatter.pubDate) - new Date(a.frontmatter.pubDate)).map((post: any) => (
+        <article class="post-card">
+          <a href={post.url}>
+            <div class="post-meta">{post.frontmatter.pubDate}</div>
+            <h2>{post.frontmatter.title}</h2>
+            <p class="post-desc">{post.frontmatter.description}</p>
+            <div class="post-tags">
+              {post.frontmatter.tags?.map((tag: string) => (
+                <span class="tag">{tag}</span>
+              ))}
+            </div>
+          </a>
+        </article>
+      ))}
+    </main>
+
+    <footer class="site-footer">
+      <p>© 2026 Aicha Marrhich</p>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,502 @@
+---
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>AI Learning Style Quiz · Aicha Marrhich</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <style>
+      :root {
+        --bg: #faf9f7;
+        --surface: #ffffff;
+        --text: #1a1a1a;
+        --text-secondary: #525252;
+        --text-muted: #737373;
+        --accent: #1e3a5f;
+        --accent-light: #2d5a87;
+        --accent-warm: #b87333;
+        --border: #e5e5e5;
+        --border-light: #f0f0f0;
+      }
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+      body {
+        font-family: 'Inter', sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        line-height: 1.7;
+        min-height: 100vh;
+      }
+      .site-nav {
+        position: fixed;
+        top: 0; left: 0; right: 0;
+        padding: 1.25rem 2rem;
+        z-index: 1000;
+        background: rgba(250, 249, 247, 0.85);
+        backdrop-filter: blur(20px) saturate(180%);
+        border-bottom: 1px solid var(--border-light);
+      }
+      .nav-inner {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .logo {
+        font-family: 'Crimson Pro', serif;
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: var(--text);
+        text-decoration: none;
+      }
+      .nav-links {
+        display: flex;
+        gap: 2.5rem;
+        align-items: center;
+      }
+      .nav-links a {
+        color: var(--text-secondary);
+        text-decoration: none;
+        font-size: 0.9rem;
+        font-weight: 500;
+        transition: color 0.2s;
+      }
+      .nav-links a:hover { color: var(--text); }
+      .nav-cta {
+        background: var(--accent);
+        color: white;
+        padding: 0.6rem 1.25rem;
+        border-radius: 8px;
+        font-size: 0.85rem;
+        font-weight: 500;
+        text-decoration: none;
+      }
+      
+      .quiz-page {
+        padding: 8rem 2rem 4rem;
+        max-width: 800px;
+        margin: 0 auto;
+      }
+      
+      .quiz-header {
+        text-align: center;
+        margin-bottom: 3rem;
+      }
+      .quiz-header .label {
+        color: var(--accent-warm);
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        margin-bottom: 1rem;
+        display: block;
+      }
+      .quiz-header h1 {
+        font-family: 'Crimson Pro', serif;
+        font-size: clamp(2rem, 4vw, 2.8rem);
+        font-weight: 400;
+        margin-bottom: 1rem;
+      }
+      .quiz-header p {
+        color: var(--text-secondary);
+        font-size: 1.1rem;
+        max-width: 500px;
+        margin: 0 auto;
+      }
+      
+      .quiz-container {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 20px;
+        padding: 3rem;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+      }
+      
+      .quiz-progress {
+        display: flex;
+        gap: 0.5rem;
+        margin-bottom: 2.5rem;
+      }
+      .quiz-progress-bar {
+        flex: 1;
+        height: 4px;
+        background: var(--border-light);
+        border-radius: 2px;
+        overflow: hidden;
+      }
+      .quiz-progress-fill {
+        height: 100%;
+        background: linear-gradient(90deg, var(--accent), var(--accent-light));
+        border-radius: 2px;
+        transition: width 0.5s ease;
+        width: 0%;
+      }
+      
+      .quiz-question {
+        font-family: 'Crimson Pro', serif;
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin-bottom: 2rem;
+        line-height: 1.4;
+        color: var(--text);
+      }
+      
+      .quiz-options {
+        display: flex;
+        flex-direction: column;
+        gap: 0.875rem;
+      }
+      
+      .quiz-option {
+        background: var(--bg);
+        border: 1.5px solid var(--border);
+        border-radius: 12px;
+        padding: 1.25rem 1.5rem;
+        cursor: pointer;
+        transition: all 0.3s;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+      }
+      
+      .quiz-option:hover {
+        border-color: var(--accent);
+        background: rgba(30, 58, 95, 0.02);
+        transform: translateX(6px);
+      }
+      
+      .quiz-option-letter {
+        width: 36px; height: 36px;
+        border-radius: 10px;
+        background: var(--surface);
+        border: 1.5px solid var(--border);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+        font-size: 0.9rem;
+        color: var(--accent);
+        flex-shrink: 0;
+        transition: all 0.3s;
+      }
+      
+      .quiz-option:hover .quiz-option-letter {
+        background: var(--accent);
+        color: white;
+        border-color: var(--accent);
+      }
+      
+      .quiz-option-text {
+        font-size: 1rem;
+        color: var(--text-secondary);
+        transition: color 0.3s;
+      }
+      
+      .quiz-option:hover .quiz-option-text {
+        color: var(--text);
+      }
+      
+      .result-card {
+        text-align: center;
+        padding: 1rem 0;
+      }
+      
+      .result-emoji {
+        font-size: 5rem;
+        margin-bottom: 1.5rem;
+        animation: bounceIn 0.6s ease-out;
+      }
+      
+      @keyframes bounceIn {
+        0% { transform: scale(0); }
+        50% { transform: scale(1.2); }
+        100% { transform: scale(1); }
+      }
+      
+      .result-title {
+        font-family: 'Crimson Pro', serif;
+        font-size: 2.2rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+        color: var(--accent);
+      }
+      
+      .result-desc {
+        color: var(--text-secondary);
+        font-size: 1.1rem;
+        line-height: 1.8;
+        margin-bottom: 2rem;
+      }
+      
+      .result-traits {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+        justify-content: center;
+        margin-bottom: 2.5rem;
+      }
+      
+      .result-trait {
+        background: var(--bg);
+        border: 1.5px solid var(--border);
+        color: var(--accent);
+        padding: 0.5rem 1.2rem;
+        border-radius: 100px;
+        font-size: 0.9rem;
+        font-weight: 500;
+      }
+      
+      .quiz-restart {
+        background: var(--accent);
+        color: white;
+        border: none;
+        padding: 0.9rem 2rem;
+        border-radius: 10px;
+        cursor: pointer;
+        font-size: 0.95rem;
+        font-weight: 500;
+        transition: all 0.3s;
+      }
+      
+      .quiz-restart:hover {
+        background: var(--accent-light);
+        transform: translateY(-2px);
+      }
+      
+      .share-section {
+        margin-top: 2rem;
+        padding-top: 2rem;
+        border-top: 1px solid var(--border);
+      }
+      .share-section p {
+        color: var(--text-muted);
+        margin-bottom: 1rem;
+        font-size: 0.9rem;
+      }
+      .share-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        background: var(--bg);
+        border: 1.5px solid var(--border);
+        color: var(--text-secondary);
+        padding: 0.6rem 1.25rem;
+        border-radius: 8px;
+        text-decoration: none;
+        font-size: 0.85rem;
+        transition: all 0.3s;
+        margin: 0 0.35rem;
+      }
+      .share-btn:hover {
+        border-color: var(--accent);
+        color: var(--accent);
+      }
+      
+      .site-footer {
+        border-top: 1px solid var(--border);
+        padding: 3rem 2rem;
+        text-align: center;
+        color: var(--text-muted);
+        font-size: 0.85rem;
+      }
+      
+      @media (max-width: 768px) {
+        .quiz-page { padding: 6rem 1.5rem 3rem; }
+        .quiz-container { padding: 2rem 1.5rem; }
+        .nav-links { display: none; }
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="site-nav">
+      <div class="nav-inner">
+        <a href="/" class="logo">Aicha Marrhich</a>
+        <div class="nav-links">
+          <a href="/">Ideas</a>
+          <a href="/quiz">Quiz</a>
+          <a href="/about">About</a>
+          <a href="https://www.linkedin.com/in/aichamarrhich" target="_blank" class="nav-cta">Let's Collaborate</a>
+        </div>
+      </div>
+    </nav>
+
+    <main class="quiz-page">
+      <div class="quiz-header">
+        <span class="label">Interactive Assessment</span>
+        <h1>What's Your AI Learning Style?</h1>
+        <p>Discover how you approach learning and teaching in the age of AI. Five questions. Instant insights.</p>
+      </div>
+      
+      <div class="quiz-container" id="quiz">
+        <div class="quiz-progress" id="progress">
+          <div class="quiz-progress-bar"><div class="quiz-progress-fill" id="progressFill"></div></div>
+        </div>
+        <div id="quizContent"></div>
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <p>© 2026 Aicha Marrhich · Shaping the future of education</p>
+    </footer>
+
+    <script>
+      var quizData = [
+        {
+          question: "You're faced with a new AI tool for your classroom. What's your first instinct?",
+          options: [
+            { text: "Dive right in and experiment with every feature", type: "explorer" },
+            { text: "Research its pedagogical impact and alignment with learning goals first", type: "architect" },
+            { text: "Check privacy policies and potential biases before letting students use it", type: "guardian" },
+            { text: "Ask colleagues for their experiences and recommendations", type: "collaborator" }
+          ]
+        },
+        {
+          question: "A student uses AI to write an essay. How do you respond?",
+          options: [
+            { text: "See it as an opportunity to discuss AI capabilities and limitations", type: "explorer" },
+            { text: "Redesign the assignment to require critical thinking AI can't replicate", type: "architect" },
+            { text: "Facilitate a class discussion on academic integrity and AI ethics", type: "guardian" },
+            { text: "Work with other teachers to develop a shared policy", type: "collaborator" }
+          ]
+        },
+        {
+          question: "Your school wants to adopt an AI tutoring system. Your priority is:",
+          options: [
+            { text: "Piloting it with a small group to see what happens", type: "explorer" },
+            { text: "Mapping how it fits into the broader curriculum strategy", type: "architect" },
+            { text: "Ensuring it protects student data and doesn't reinforce inequities", type: "guardian" },
+            { text: "Getting input from teachers, students, and parents before deciding", type: "collaborator" }
+          ]
+        },
+        {
+          question: "Which statement resonates most with your teaching philosophy?",
+          options: [
+            { text: "Learning happens through discovery and experimentation", type: "explorer" },
+            { text: "Every tool should serve a clear learning objective", type: "architect" },
+            { text: "Technology must be evaluated through an ethical lens first", type: "guardian" },
+            { text: "The best solutions emerge from collective wisdom", type: "collaborator" }
+          ]
+        },
+        {
+          question: "You have 30 minutes to learn a new AI tool. You spend it:",
+          options: [
+            { text: "Clicking around and trying different features intuitively", type: "explorer" },
+            { text: "Reading documentation and planning how to integrate it", type: "architect" },
+            { text: "Investigating who built it and what data it collects", type: "guardian" },
+            { text: "Watching tutorial videos and joining community forums", type: "collaborator" }
+          ]
+        }
+      ];
+
+      var results = {
+        explorer: {
+          emoji: "🚀",
+          title: "The Curious Explorer",
+          desc: "You learn by doing, experimenting, and discovering. In the AI era, you're the early adopter who finds creative ways to engage students with new tools. Your superpower is adaptability — you turn uncertainty into opportunity. Just remember to pause occasionally and reflect on the 'why' behind the tools you adopt.",
+          traits: ["Experimental", "Adaptable", "Creative", "Risk-tolerant"]
+        },
+        architect: {
+          emoji: "🏗️",
+          title: "The Strategic Architect",
+          desc: "You see the big picture. Every AI tool is evaluated against learning outcomes and curriculum goals. You're the bridge between innovation and pedagogy, ensuring technology serves education — not the other way around. Your methodical approach prevents shiny-object syndrome, but don't forget to leave room for serendipity.",
+          traits: ["Strategic", "Goal-oriented", "Systematic", "Visionary"]
+        },
+        guardian: {
+          emoji: "🛡️",
+          title: "The Ethical Guardian",
+          desc: "You put people before technology. Privacy, equity, and ethical considerations are your north star. In a world rushing to adopt AI, you're the essential voice asking: 'At what cost?' Your students benefit from your protective wisdom. Challenge yourself to also embrace AI's potential when safeguards are in place.",
+          traits: ["Principled", "Protective", "Analytical", "Advocate"]
+        },
+        collaborator: {
+          emoji: "🤝",
+          title: "The Connected Collaborator",
+          desc: "You believe the best learning happens together. You build networks, share discoveries, and create collective knowledge. In the AI age, you're the community builder who ensures no one is left behind. Your collaborative spirit is infectious. Remember that sometimes quick individual exploration can complement group learning.",
+          traits: ["Social", "Empathetic", "Networked", "Inclusive"]
+        }
+      };
+
+      var currentQ = 0;
+      var scores = { explorer: 0, architect: 0, guardian: 0, collaborator: 0 };
+
+      function initQuiz() {
+        currentQ = 0;
+        scores = { explorer: 0, architect: 0, guardian: 0, collaborator: 0 };
+        document.getElementById('progress').style.display = 'flex';
+        renderQuestion();
+      }
+
+      function renderQuestion() {
+        var q = quizData[currentQ];
+        var progress = ((currentQ) / quizData.length) * 100;
+        document.getElementById('progressFill').style.width = progress + '%';
+        
+        var html = '<div class="quiz-question">' + (currentQ + 1) + '. ' + q.question + '</div><div class="quiz-options">';
+        for (var i = 0; i < q.options.length; i++) {
+          html += '<div class="quiz-option" data-type="' + q.options[i].type + '"><div class="quiz-option-letter">' + String.fromCharCode(65 + i) + '</div><div class="quiz-option-text">' + q.options[i].text + '</div></div>';
+        }
+        html += '</div>';
+        document.getElementById('quizContent').innerHTML = html;
+        
+        var opts = document.querySelectorAll('.quiz-option');
+        for (var j = 0; j < opts.length; j++) {
+          opts[j].addEventListener('click', function() {
+            selectOption(this.getAttribute('data-type'));
+          });
+        }
+      }
+
+      function selectOption(type) {
+        scores[type]++;
+        currentQ++;
+        
+        if (currentQ < quizData.length) {
+          renderQuestion();
+        } else {
+          showResult();
+        }
+      }
+
+      function showResult() {
+        var winner = 'explorer';
+        var maxScore = scores.explorer;
+        if (scores.architect > maxScore) { winner = 'architect'; maxScore = scores.architect; }
+        if (scores.guardian > maxScore) { winner = 'guardian'; maxScore = scores.guardian; }
+        if (scores.collaborator > maxScore) { winner = 'collaborator'; }
+        
+        var r = results[winner];
+        document.getElementById('progress').style.display = 'none';
+        
+        var shareText = 'I am ' + r.title + ' 🎯 Discover your AI Learning Style!';
+        
+        var traitsHtml = '';
+        for (var t = 0; t < r.traits.length; t++) {
+          traitsHtml += '<span class="result-trait">' + r.traits[t] + '</span>';
+        }
+        
+        document.getElementById('quizContent').innerHTML = 
+          '<div class="result-card">' +
+            '<div class="result-emoji">' + r.emoji + '</div>' +
+            '<h2 class="result-title">' + r.title + '</h2>' +
+            '<p class="result-desc">' + r.desc + '</p>' +
+            '<div class="result-traits">' + traitsHtml + '</div>' +
+            '<button class="quiz-restart" id="restartBtn">Take Quiz Again</button>' +
+            '<div class="share-section">' +
+              '<p>Share your result</p>' +
+              '<a class="share-btn" href="https://twitter.com/intent/tweet?text=' + encodeURIComponent(shareText) + '" target="_blank">𝕏 Share</a>' +
+              '<a class="share-btn" href="https://www.linkedin.com/sharing/share-offsite/?url=' + encodeURIComponent(window.location.href) + '" target="_blank">LinkedIn</a>' +
+            '</div>' +
+          '</div>';
+        
+        document.getElementById('restartBtn').addEventListener('click', initQuiz);
+      }
+
+      document.addEventListener('DOMContentLoaded', initQuiz);
+    </script>
+  </body>
+</html>

@@ -710,8 +710,6 @@ const posts = Object.values(import.meta.glob('./blog/*.md', { eager: true }));
         .bento-grid { grid-template-columns: 1fr; }
         .bento-card.featured { grid-column: span 1; }
         .themes-grid { grid-template-columns: repeat(2, 1fr); }
-        .quiz-inner { grid-template-columns: 1fr; }
-        .quiz-visual { display: none; }
         .footer-inner { flex-direction: column; gap: 2rem; }
         .nav-links { display: none; }
       }
@@ -900,40 +898,6 @@ const posts = Object.values(import.meta.glob('./blog/*.md', { eager: true }));
         <div class="theme-card">
           <div class="theme-icon">👥</div>
           <div class="theme-name">Human-AI Collaboration</div>
-        </div>
-      </div>
-    </section>
-
-    <!-- QUIZ CTA -->
-    <section class="quiz-section">
-      <div class="quiz-inner">
-        <div class="quiz-content">
-          <h2>What's Your AI Learning Style?</h2>
-          <p>Take this quick interactive assessment to discover how you approach learning and teaching in the age of AI. Get personalized insights and share your results.</p>
-          <a href="/quiz" class="quiz-btn">
-            Start the Quiz
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
-          </a>
-        </div>
-        <div class="quiz-visual">
-          <div class="quiz-preview">
-            <div class="quiz-preview-item">
-              <div class="quiz-preview-letter">A</div>
-              <div class="quiz-preview-text">Dive in and experiment</div>
-            </div>
-            <div class="quiz-preview-item">
-              <div class="quiz-preview-letter">B</div>
-              <div class="quiz-preview-text">Research pedagogical impact first</div>
-            </div>
-            <div class="quiz-preview-item">
-              <div class="quiz-preview-letter">C</div>
-              <div class="quiz-preview-text">Check privacy and bias</div>
-            </div>
-            <div class="quiz-preview-item">
-              <div class="quiz-preview-letter">D</div>
-              <div class="quiz-preview-text">Ask colleagues for input</div>
-            </div>
-          </div>
         </div>
       </div>
     </section>

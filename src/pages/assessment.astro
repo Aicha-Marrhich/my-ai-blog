@@ -1,6 +1,6 @@
 ---
 // School AI Readiness Assessment
-// This page runs entirely in the browser — Astro does NOT process the script
+// Original design - matches the working index.html exactly
 ---
 
 <!DOCTYPE html>
@@ -12,6 +12,7 @@
 <style>
   :root {
     --navy: #1B2A41;
+    --navy-light: #2E4258;
     --slate: #5C6B7A;
     --paper: #F5F4F0;
     --gold: #B08D57;
@@ -51,15 +52,21 @@
     color: var(--navy);
   }
   .subtitle { color: var(--slate); font-size: 16px; max-width: 56ch; }
+
+  /* Progress */
   .progress-track {
     height: 4px; background: var(--line); border-radius: 2px;
     margin: 32px 0 40px; overflow: hidden;
   }
   .progress-fill { height: 100%; background: var(--gold); width: 0%; transition: width 0.3s ease; }
+
+  /* Dimension label on each question */
   .dim-label {
     font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase;
     color: var(--gold); font-weight: 600; margin-bottom: 8px;
   }
+  .q-counter { font-size: 13px; color: var(--slate); margin-bottom: 4px; }
+
   .question-card {
     background: white; border: 1px solid var(--line); border-radius: 4px;
     padding: 32px; margin-bottom: 24px;
@@ -75,6 +82,7 @@
   }
   .option:hover { border-color: var(--gold); background: var(--gold-light); }
   .option.selected { border-color: var(--gold); background: var(--gold-light); font-weight: 600; }
+
   .nav-row { display: flex; justify-content: space-between; align-items: center; }
   button {
     font-family: inherit; font-size: 14px; padding: 12px 28px;
@@ -84,18 +92,23 @@
   button:disabled { opacity: 0.35; cursor: not-allowed; }
   button.secondary { background: white; color: var(--navy); }
   .start-btn { font-size: 15px; padding: 14px 32px; }
+
+  /* Intro */
   .dims-list { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 32px 0 40px; }
   .dim-chip {
     border: 1px solid var(--line); border-radius: 4px; padding: 14px 16px; background: white;
   }
   .dim-chip .num { font-family: Georgia, serif; font-size: 13px; color: var(--gold); font-weight: 700; }
   .dim-chip .name { font-size: 14px; font-weight: 600; margin-top: 2px; }
+
+  /* Results */
   .score-hero {
     text-align: center; padding: 40px 20px; border: 1px solid var(--line);
     background: white; border-radius: 4px; margin-bottom: 32px;
   }
   .score-big { font-family: Georgia, serif; font-size: 64px; color: var(--navy); line-height: 1; }
   .score-band { font-size: 15px; letter-spacing: 0.04em; text-transform: uppercase; font-weight: 600; margin-top: 8px; }
+
   .dim-results { display: flex; flex-direction: column; gap: 14px; margin: 32px 0; }
   .dim-row { background: white; border: 1px solid var(--line); border-radius: 4px; padding: 18px 20px; }
   .dim-row-top { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 10px; }
@@ -104,17 +117,20 @@
   .bar-track { height: 8px; background: var(--line); border-radius: 4px; overflow: hidden; margin-bottom: 10px; }
   .bar-fill { height: 100%; border-radius: 4px; }
   .dim-row-rec { font-size: 14px; color: var(--slate); }
+
   .report-section { margin-top: 40px; }
   .report-section h2 {
     font-family: Georgia, serif; font-size: 20px; font-weight: 400;
     border-bottom: 1px solid var(--line); padding-bottom: 10px; margin-bottom: 16px;
   }
   .next-steps li { margin-bottom: 10px; font-size: 15px; }
+
   .actions-row { display: flex; gap: 12px; margin-top: 40px; flex-wrap: wrap; }
   footer.credit {
     margin-top: 56px; padding-top: 20px; border-top: 1px solid var(--line);
     font-size: 13px; color: var(--slate);
   }
+
   @media print {
     .actions-row, .top button { display: none; }
   }

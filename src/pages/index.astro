@@ -655,6 +655,53 @@ const posts = Object.values(import.meta.glob('./blog/*.md', { eager: true }));
         animation: fadeUp 0.8s ease-out forwards;
       }
       
+      /* TOOLS SECTION */
+      .tools-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .tool-card {
+        position: relative;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      .tool-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+      }
+
+      .tool-card.featured {
+        grid-column: span 2;
+        background: linear-gradient(135deg, var(--accent), var(--accent-light));
+        color: white;
+        border: none;
+      }
+
+      .tool-card.featured .bento-tag {
+        background: rgba(255,255,255,0.15);
+        color: rgba(255,255,255,0.9);
+      }
+
+      .tool-card.featured .bento-title {
+        color: white;
+      }
+
+      .tool-card.featured .bento-desc {
+        color: rgba(255,255,255,0.8);
+      }
+
+      .tool-card.featured .bento-meta {
+        color: rgba(255,255,255,0.6);
+      }
+
+      @media (max-width: 900px) {
+        .tools-grid {
+          grid-template-columns: 1fr;
+        }
+        .tool-card.featured {
+          grid-column: span 1;
+        }
+      }
       /* RESPONSIVE */
       @media (max-width: 900px) {
         .hero-inner { grid-template-columns: 1fr; gap: 3rem; }
@@ -677,7 +724,7 @@ const posts = Object.values(import.meta.glob('./blog/*.md', { eager: true }));
         <div class="nav-links">
           <a href="/">Ideas</a>
           <a href="/quiz">Quiz</a>
-          <a href="/assessment">Assessment</a>
+          <a href="#tools">Tools</a>
           <a href="/about">About</a>
           <a href="https://www.linkedin.com/in/aichamarrhich" target="_blank" class="nav-cta">Let's Collaborate</a>
         </div>
@@ -756,6 +803,60 @@ const posts = Object.values(import.meta.glob('./blog/*.md', { eager: true }));
             </div>
           </article>
         ))}
+      </div>
+    </section>
+
+    <!-- TOOLS & RESOURCES -->
+    <section class="section" id="tools">
+      <div class="section-header">
+        <div class="section-label">Tools</div>
+        <h2>Interactive Tools</h2>
+        <p class="section-desc">Free assessments and resources to help you navigate AI in education.</p>
+      </div>
+
+      <div class="bento-grid tools-grid">
+        <article class="bento-card tool-card featured">
+          <a href="/assessment" class="bento-link"></a>
+          <span class="bento-tag">Assessment</span>
+          <h3 class="bento-title">School AI Readiness Assessment</h3>
+          <p class="bento-desc">A 15-question diagnostic for school leaders to evaluate readiness for AI integration across five dimensions — infrastructure, staff literacy, policy, curriculum, and student skills.</p>
+          <div class="bento-meta">
+            <span>15 questions</span>
+            <span>·</span>
+            <span>5 min</span>
+            <span>·</span>
+            <span>Instant report</span>
+          </div>
+        </article>
+
+        <article class="bento-card tool-card">
+          <a href="/quiz" class="bento-link"></a>
+          <span class="bento-tag">Quiz</span>
+          <h3 class="bento-title">AI Learning Style Quiz</h3>
+          <p class="bento-desc">Discover your unique approach to learning in the age of AI. Are you an Explorer, Architect, Guardian, or Collaborator?</p>
+          <div class="bento-meta">
+            <span>Quick quiz</span>
+            <span>·</span>
+            <span>5 min</span>
+            <span>·</span>
+            <span>Personalized result</span>
+          </div>
+        </article>
+
+        <!-- Add more tools here as you create them -->
+        <!-- 
+        <article class="bento-card tool-card">
+          <a href="/your-new-tool" class="bento-link"></a>
+          <span class="bento-tag">New Tool</span>
+          <h3 class="bento-title">Your New Tool Name</h3>
+          <p class="bento-desc">Short description of what this tool does.</p>
+          <div class="bento-meta">
+            <span>Type</span>
+            <span>·</span>
+            <span>Time</span>
+          </div>
+        </article>
+        -->
       </div>
     </section>
 
@@ -859,7 +960,7 @@ const posts = Object.values(import.meta.glob('./blog/*.md', { eager: true }));
             <h4>Explore</h4>
             <a href="/">Ideas</a>
             <a href="/quiz">Quiz</a>
-            <a href="/assessment">Assessment</a>
+            <a href="#tools">Tools</a>
             <a href="/about">About</a>
           </div>
           <div class="footer-col">

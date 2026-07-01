@@ -139,10 +139,21 @@ const formattedDate = date.toLocaleDateString("en-GB", {
       padding: 52px 24px 80px;
     }
 
+    .article-body :global(img) {
+      max-width: 100%;
+      width: auto;
+      max-height: 350px;
+      height: auto;
+      border-radius: 8px;
+      margin: 2em auto;
+      display: block;
+      object-fit: cover;
+    }
+
     .article-body > :global(p:first-of-type)::first-letter {
       font-family: Georgia, serif;
-      font-size: 3.6em; line-height: .8;
-      float: left; margin: .06em .1em 0 0;
+      font-size: 2.5em; line-height: .8;
+      float: left; margin: .1em .15em 0 0;
       color: var(--gold-dk); font-weight: 400;
     }
 
@@ -179,14 +190,6 @@ const formattedDate = date.toLocaleDateString("en-GB", {
       line-height: 1.65;
     }
 
-    .article-body :global(p:has(strong:only-child)),
-    .article-body :global(p > strong:first-child:last-child) {
-      background: var(--gold-lt);
-      border: 1px solid rgba(176,141,87,.3);
-      border-radius: 8px;
-      padding: 16px 20px;
-      font-family: -apple-system, "Segoe UI", sans-serif;
-      font-size: .95em;
     }
 
     .article-body :global(strong) { font-weight: 700; color: var(--navy); }
@@ -277,17 +280,7 @@ const formattedDate = date.toLocaleDateString("en-GB", {
       transition: background .15s;
     }
     .share-btn:hover { background: #2C3E5A; }
-    /* Images dans l'article */
-    .article-body :global(img) {
-      max-width: 50px;
-      width: 100%;
-      max-height: 350px;
-      height: auto;
-      border-radius: 8px;
-      margin: 2em auto;
-      display: block;
-      object-fit: cover;
-    }
+
     @media (max-width: 600px) {
       .article-header { padding: 36px 20px 36px; }
       .article-body { padding: 40px 20px 60px; }

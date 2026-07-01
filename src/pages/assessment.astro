@@ -1,176 +1,553 @@
 ---
-// School AI Readiness Assessment
 ---
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>School AI Readiness Assessment</title>
-<style>
-:root{
-  --navy:#1B2A41;--navy-soft:#2C3E5A;--slate:#5C6B7A;
-  --paper:#F6F4EF;--paper-deep:#EFEBE2;
-  --gold:#B08D57;--gold-light:#F1E6D2;--gold-deep:#8C6B3D;
-  --line:#E2DED3;--line-soft:#EDEAE1;
-  --good:#3B6D11;--good-bg:#EAF3DF;
-  --mid:#9A5B0C;--mid-bg:#FBF0DD;
-  --low:#A32D2D;--low-bg:#FAE6E6;
-  --white:#FFFFFF;
-  --shadow-sm:0 1px 2px rgba(27,42,65,.06);
-  --shadow-md:0 4px 16px rgba(27,42,65,.08);
-  --shadow-lg:0 12px 32px rgba(27,42,65,.12);
-}
-*{box-sizing:border-box}
-body{
-  margin:0;
-  background:linear-gradient(180deg,var(--paper) 0%,var(--paper-deep) 100%);
-  background-attachment:fixed;
-  color:var(--navy);
-  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
-  line-height:1.6;
-  -webkit-font-smoothing:antialiased;
-}
-.wrap{max-width:760px;margin:0 auto;padding:56px 24px 90px;animation:fadeIn .5s ease}
-@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+<style is:global>
+  :root {
+    --navy: #1B2A41;
+    --navy-light: #2E4258;
+    --slate: #5C6B7A;
+    --paper: #F5F4F0;
+    --gold: #B08D57;
+    --gold-light: #E8DCC8;
+    --line: #D8D5CC;
+    --good: #3B6D11;
+    --mid: #854F0B;
+    --low: #A32D2D;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--navy);
+    font-family: -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+    line-height: 1.6;
+  }
+  .wrap { max-width: 760px; margin: 0 auto; padding: 48px 24px 80px; }
+  header.top {
+    border-bottom: 2px solid var(--navy);
+    padding-bottom: 24px;
+    margin-bottom: 40px;
+  }
+  .eyebrow {
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+  h1 {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 32px;
+    font-weight: 400;
+    margin: 0 0 12px;
+    color: var(--navy);
+  }
+  .subtitle { color: var(--slate); font-size: 16px; max-width: 56ch; }
 
-header.top{padding-bottom:28px;margin-bottom:36px;position:relative}
-header.top::after{content:"";position:absolute;bottom:0;left:0;width:64px;height:3px;background:var(--gold);border-radius:3px}
-.eyebrow{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold-deep);font-weight:700;margin-bottom:12px;display:flex;align-items:center;gap:8px}
-.eyebrow::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--gold)}
-h1{font-family:Georgia,"Times New Roman",serif;font-size:34px;font-weight:400;margin:0 0 14px;color:var(--navy);letter-spacing:-.01em}
-.subtitle{color:var(--slate);font-size:16px;max-width:58ch}
+  /* Progress */
+  .progress-track {
+    height: 4px; background: var(--line); border-radius: 2px;
+    margin: 32px 0 40px; overflow: hidden;
+  }
+  .progress-fill { height: 100%; background: var(--gold); width: 0%; transition: width 0.3s ease; }
 
-.progress-track{height:6px;background:var(--line);border-radius:6px;margin:32px 0 40px;overflow:hidden;box-shadow:inset 0 1px 2px rgba(27,42,65,.08)}
-.progress-fill{height:100%;background:linear-gradient(90deg,var(--gold-deep),var(--gold));border-radius:6px;width:0%;transition:width .4s cubic-bezier(.4,0,.2,1)}
+  /* Dimension label on each question */
+  .dim-label {
+    font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--gold); font-weight: 600; margin-bottom: 8px;
+  }
+  .q-counter { font-size: 13px; color: var(--slate); margin-bottom: 4px; }
 
-.dim-label{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold-deep);font-weight:700;margin-bottom:10px;display:flex;align-items:center;gap:6px}
+  .question-card {
+    background: white; border: 1px solid var(--line); border-radius: 4px;
+    padding: 32px; margin-bottom: 24px;
+  }
+  .question-text {
+    font-family: Georgia, serif; font-size: 21px; font-weight: 400;
+    margin: 0 0 24px; color: var(--navy);
+  }
+  .options { display: flex; flex-direction: column; gap: 10px; }
+  .option {
+    border: 1px solid var(--line); border-radius: 4px; padding: 14px 16px;
+    cursor: pointer; font-size: 15px; transition: all 0.15s; background: white;
+  }
+  .option:hover { border-color: var(--gold); background: var(--gold-light); }
+  .option.selected { border-color: var(--gold); background: var(--gold-light); font-weight: 600; }
 
-.question-card{
-  background:var(--white);border:1px solid var(--line);border-radius:16px;
-  padding:36px;margin-bottom:28px;box-shadow:var(--shadow-md);
-  transition:box-shadow .2s ease;
-}
-.question-text{font-family:Georgia,serif;font-size:22px;font-weight:400;margin:0 0 28px;color:var(--navy);line-height:1.45}
+  .nav-row { display: flex; justify-content: space-between; align-items: center; }
+  button {
+    font-family: inherit; font-size: 14px; padding: 12px 28px;
+    border-radius: 3px; cursor: pointer; border: 1px solid var(--navy);
+    background: var(--navy); color: white; font-weight: 600;
+  }
+  button:disabled { opacity: 0.35; cursor: not-allowed; }
+  button.secondary { background: white; color: var(--navy); }
+  .start-btn { font-size: 15px; padding: 14px 32px; }
 
-.options{display:flex;flex-direction:column;gap:12px}
-.option{
-  display:flex;align-items:center;gap:14px;
-  border:1.5px solid var(--line);border-radius:12px;
-  padding:16px 18px;cursor:pointer;font-size:15.5px;
-  background:var(--white);
-  transition:border-color .15s ease,background .15s ease,transform .12s ease,box-shadow .15s ease;
-  position:relative;
-}
-.option:hover{border-color:var(--gold);background:var(--gold-light);transform:translateX(2px)}
-.option:active{transform:scale(.99)}
-.option .radio{
-  flex:0 0 auto;width:20px;height:20px;border-radius:50%;
-  border:2px solid var(--line);position:relative;transition:border-color .15s ease;
-}
-.option .radio::after{
-  content:"";position:absolute;inset:3px;border-radius:50%;
-  background:var(--gold);transform:scale(0);transition:transform .15s cubic-bezier(.4,0,.2,1);
-}
-.option.selected{border-color:var(--gold);background:var(--gold-light);font-weight:600;box-shadow:var(--shadow-sm)}
-.option.selected .radio{border-color:var(--gold)}
-.option.selected .radio::after{transform:scale(1)}
-.option .label-text{flex:1}
+  /* Intro */
+  .dims-list { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 32px 0 40px; }
+  .dim-chip {
+    border: 1px solid var(--line); border-radius: 4px; padding: 14px 16px; background: white;
+  }
+  .dim-chip .num { font-family: Georgia, serif; font-size: 13px; color: var(--gold); font-weight: 700; }
+  .dim-chip .name { font-size: 14px; font-weight: 600; margin-top: 2px; }
 
-.nav-row{display:flex;justify-content:space-between;align-items:center;gap:16px}
+  /* Results */
+  .score-hero {
+    text-align: center; padding: 40px 20px; border: 1px solid var(--line);
+    background: white; border-radius: 4px; margin-bottom: 32px;
+  }
+  .score-big { font-family: Georgia, serif; font-size: 64px; color: var(--navy); line-height: 1; }
+  .score-band { font-size: 15px; letter-spacing: 0.04em; text-transform: uppercase; font-weight: 600; margin-top: 8px; }
 
-button{
-  font-family:inherit;font-size:14.5px;padding:14px 30px;border-radius:10px;
-  cursor:pointer;border:1.5px solid var(--navy);background:var(--navy);color:var(--white);
-  font-weight:600;letter-spacing:.01em;transition:transform .12s ease,box-shadow .15s ease,background .15s ease;
-  box-shadow:var(--shadow-sm);
-}
-button:hover:not(:disabled){background:var(--navy-soft);box-shadow:var(--shadow-md);transform:translateY(-1px)}
-button:active:not(:disabled){transform:translateY(0)}
-button:disabled{opacity:.32;cursor:not-allowed;box-shadow:none}
-button.secondary{background:var(--white);color:var(--navy)}
-button.secondary:hover:not(:disabled){background:var(--paper-deep)}
-.start-btn{font-size:15.5px;padding:16px 36px;border-radius:12px}
+  .dim-results { display: flex; flex-direction: column; gap: 14px; margin: 32px 0; }
+  .dim-row { background: white; border: 1px solid var(--line); border-radius: 4px; padding: 18px 20px; }
+  .dim-row-top { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 10px; }
+  .dim-row-name { font-weight: 600; font-size: 15px; }
+  .dim-row-score { font-family: Georgia, serif; font-size: 18px; color: var(--navy); }
+  .bar-track { height: 8px; background: var(--line); border-radius: 4px; overflow: hidden; margin-bottom: 10px; }
+  .bar-fill { height: 100%; border-radius: 4px; }
+  .dim-row-rec { font-size: 14px; color: var(--slate); }
 
-.dims-list{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:32px 0 36px}
-.dim-chip{
-  border:1px solid var(--line);border-radius:12px;padding:16px 18px;background:var(--white);
-  box-shadow:var(--shadow-sm);transition:transform .15s ease,box-shadow .15s ease;
-}
-.dim-chip:hover{transform:translateY(-2px);box-shadow:var(--shadow-md)}
-.dim-chip .num{font-family:Georgia,serif;font-size:13px;color:var(--gold-deep);font-weight:700}
-.dim-chip .name{font-size:14.5px;font-weight:600;margin-top:4px}
+  .report-section { margin-top: 40px; }
+  .report-section h2 {
+    font-family: Georgia, serif; font-size: 20px; font-weight: 400;
+    border-bottom: 1px solid var(--line); padding-bottom: 10px; margin-bottom: 16px;
+  }
+  .next-steps li { margin-bottom: 10px; font-size: 15px; }
 
-.hint{color:var(--slate);font-size:14px;display:flex;align-items:center;gap:8px;margin-bottom:32px}
-.hint::before{content:"🔒";font-size:13px}
+  .actions-row { display: flex; gap: 12px; margin-top: 40px; flex-wrap: wrap; }
+  footer.credit {
+    margin-top: 56px; padding-top: 20px; border-top: 1px solid var(--line);
+    font-size: 13px; color: var(--slate);
+  }
 
-.score-hero{
-  text-align:center;padding:48px 24px;border:1px solid var(--line);background:var(--white);
-  border-radius:20px;margin-bottom:36px;box-shadow:var(--shadow-lg);position:relative;overflow:hidden;
-}
-.score-hero::before{content:"";position:absolute;top:0;left:0;right:0;height:5px;background:linear-gradient(90deg,var(--gold-deep),var(--gold))}
-.score-big{font-family:Georgia,serif;font-size:68px;color:var(--navy);line-height:1;letter-spacing:-.02em}
-.score-band{
-  display:inline-block;font-size:14px;letter-spacing:.06em;text-transform:uppercase;font-weight:700;
-  margin-top:14px;padding:7px 18px;border-radius:999px;
-}
-
-.report-section{margin-top:44px}
-.report-section h2{font-family:Georgia,serif;font-size:21px;font-weight:400;border-bottom:1px solid var(--line);padding-bottom:12px;margin-bottom:20px;color:var(--navy)}
-
-.dim-results{display:flex;flex-direction:column;gap:14px;margin:0}
-.dim-row{background:var(--white);border:1px solid var(--line);border-radius:14px;padding:20px 22px;box-shadow:var(--shadow-sm);transition:box-shadow .2s ease}
-.dim-row:hover{box-shadow:var(--shadow-md)}
-.dim-row-top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:12px}
-.dim-row-name{font-weight:600;font-size:15px}
-.dim-row-score{font-family:Georgia,serif;font-size:18px;color:var(--navy)}
-.bar-track{height:9px;background:var(--line);border-radius:5px;overflow:hidden;margin-bottom:12px;box-shadow:inset 0 1px 2px rgba(27,42,65,.08)}
-.bar-fill{height:100%;border-radius:5px;transition:width .5s cubic-bezier(.4,0,.2,1)}
-.dim-row-rec{font-size:14px;color:var(--slate);line-height:1.55}
-
-.next-steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:12px}
-.next-steps li{
-  font-size:15px;background:var(--white);border:1px solid var(--line);border-radius:12px;
-  padding:16px 18px;box-shadow:var(--shadow-sm);
-}
-.next-steps li strong{color:var(--gold-deep)}
-
-.actions-row{display:flex;gap:14px;margin-top:44px;flex-wrap:wrap}
-footer.credit{margin-top:60px;padding-top:22px;border-top:1px solid var(--line);font-size:13px;color:var(--slate);text-align:center}
-
-@media print{.actions-row{display:none}}
-@media(max-width:560px){
-  .wrap{padding:36px 18px 70px}
-  .dims-list{grid-template-columns:1fr}
-  .score-big{font-size:48px}
-  h1{font-size:27px}
-  .question-card{padding:24px 20px}
-  .question-text{font-size:19px}
-}
+  @media print {
+    .actions-row, .top button { display: none; }
+  }
+  @media (max-width: 560px) {
+    .dims-list { grid-template-columns: 1fr; }
+    .score-big { font-size: 48px; }
+  }
 </style>
 </head>
 <body>
 <div class="wrap" id="app"></div>
+
 <script is:inline>
-const D=[{k:"infra",n:"Infrastructure & access",q:[{t:"How would you describe device and internet access for students at your school?",o:[{l:"Inconsistent — many students lack reliable devices or connectivity",s:0},{l:"Basic — shared devices available but limited",s:1},{l:"Good — most students have regular access",s:2},{l:"Excellent — 1:1 devices with reliable connectivity for all",s:3}]},{t:"Does your school currently provide access to any AI tools for staff or students?",o:[{l:"No AI tools are currently provided",s:0},{l:"A few staff use personal AI tools informally",s:1},{l:"Some approved tools are available to certain groups",s:2},{l:"A range of vetted AI tools is available school-wide",s:3}]},{t:"How equipped is your IT infrastructure to support AI tool integration (data security, system compatibility)?",o:[{l:"Not assessed or known to be inadequate",s:0},{l:"Some gaps identified, no plan yet",s:1},{l:"Mostly adequate, minor gaps",s:2},{l:"Fully assessed and AI-ready",s:3}]}]},{k:"staff",n:"Staff AI literacy",q:[{t:"How confident are teachers, on average, in understanding what AI is and how it works?",o:[{l:"Most staff have little to no understanding",s:0},{l:"Basic awareness, but limited practical understanding",s:1},{l:"Good general understanding across most staff",s:2},{l:"Strong, confident understanding school-wide",s:3}]},{t:"Has your school provided any AI-related professional development for staff?",o:[{l:"No training has been offered",s:0},{l:"One-off session or optional resources only",s:1},{l:"Some structured training for interested staff",s:2},{l:"Ongoing, mandatory professional development programme",s:3}]},{t:"How are teachers currently using AI in their own planning or workload?",o:[{l:"Not at all, or actively discouraged",s:0},{l:"A few individuals experiment informally",s:1},{l:"Many staff use it regularly for planning support",s:2},{l:"Embedded as standard practice with clear guidance",s:3}]}]},{k:"policy",n:"Policy & governance",q:[{t:"Does your school have a written AI use policy?",o:[{l:"No policy exists",s:0},{l:"Informal guidance only, nothing written",s:1},{l:"A draft policy exists but isn't finalised",s:2},{l:"A clear, communicated policy is in place",s:3}]},{t:"How does your school currently handle data privacy concerns related to AI tools?",o:[{l:"Not yet considered",s:0},{l:"Aware of the issue, no formal process",s:1},{l:"Some vetting process exists for new tools",s:2},{l:"Robust, documented data governance process",s:3}]},{t:"How clear are your academic integrity guidelines regarding AI use by students?",o:[{l:"No guidance exists",s:0},{l:"Informal expectations, not documented",s:1},{l:"Written guidance exists for some subjects",s:2},{l:"Clear, consistent guidance across the school",s:3}]}]},{k:"curriculum",n:"Curriculum integration",q:[{t:"Is AI literacy currently taught anywhere in your curriculum?",o:[{l:"Not addressed anywhere",s:0},{l:"Touched on briefly in one subject or assembly",s:1},{l:"Integrated into a few subjects",s:2},{l:"Embedded across multiple subjects and year groups",s:3}]},{t:"How are AI tools being used to support teaching and learning in lessons?",o:[{l:"Not used in lessons at all",s:0},{l:"Occasional, individual teacher experimentation",s:1},{l:"Used regularly in several subject areas",s:2},{l:"Thoughtfully integrated as a teaching tool school-wide",s:3}]},{t:"Does your school have a plan to align AI literacy teaching with frameworks such as the OECD AILit Framework?",o:[{l:"Not aware of such frameworks",s:0},{l:"Aware, but no plan to align",s:1},{l:"Beginning to explore alignment",s:2},{l:"Actively aligning curriculum to a recognised framework",s:3}]}]},{k:"student",n:"Student AI literacy",q:[{t:"How would you describe students' current understanding of how AI systems work?",o:[{l:"Very limited understanding",s:0},{l:"Basic awareness from informal use",s:1},{l:"Reasonable understanding for most students",s:2},{l:"Strong, critical understanding across year groups",s:3}]},{t:"Are students taught to critically evaluate AI-generated content?",o:[{l:"Not taught at all",s:0},{l:"Mentioned occasionally, not formally taught",s:1},{l:"Taught in some subjects or year groups",s:2},{l:"Consistently taught as a core skill",s:3}]},{t:"Do students have opportunities to discuss the ethical and societal implications of AI?",o:[{l:"No such opportunities exist",s:0},{l:"Occasional, informal discussion",s:1},{l:"Built into some subjects (e.g. PSHE, citizenship)",s:2},{l:"Regular, structured opportunities across the curriculum",s:3}]}]}];
-const B=[{min:0,max:.99,l:"Early stage",c:"var(--low)",bg:"var(--low-bg)",d:"Your school is at the very beginning of its AI journey. This is a completely normal starting point — the goal now is building foundational awareness and a simple first policy."},{min:1,max:1.74,l:"Emerging",c:"var(--mid)",bg:"var(--mid-bg)",d:"Pockets of activity exist but lack coordination. The priority is connecting these efforts under a shared plan."},{min:1.75,max:2.49,l:"Developing",c:"var(--mid)",bg:"var(--mid-bg)",d:"Solid foundations are in place across most areas. Focus now on consistency and embedding practice school-wide."},{min:2.5,max:3,l:"Advanced",c:"var(--good)",bg:"var(--good-bg)",d:"Your school is well-positioned on AI readiness. The focus now is refinement, evaluation, and sharing practice with others."}];
-const Q=D.flatMap(d=>d.q.map(q=>({...q,dk:d.k,dn:d.n})));
-let S={sc:"intro",c:0,a:new Array(Q.length).fill(null)};
-function gB(s){return B.find(b=>s>=b.min&&s<=b.max)||B[0]}
-function rF(k,bl){const R={infra:{"Early stage":"Start by mapping current device and connectivity gaps across the school.","Emerging":"Pilot one or two vetted AI tools with a small staff group before wider rollout.","Developing":"Formalise an approved tools list and review data security with IT.","Advanced":"Document your infrastructure approach so it can be shared with other schools."},staff:{"Early stage":"Run a single introductory AI session for all staff this term.","Emerging":"Identify 2-3 AI champions per department to lead informal peer training.","Developing":"Move from optional to structured, ongoing professional development.","Advanced":"Consider mentoring other schools or leading a local training network."},policy:{"Early stage":"Draft a one-page interim AI use policy this month as a starting point.","Emerging":"Finalise and formally communicate a written policy to all stakeholders.","Developing":"Review your policy against the EU AI Act and OECD guidance for gaps.","Advanced":"Publish your policy as a model for other schools in your network."},curriculum:{"Early stage":"Identify one subject area to pilot AI literacy content this term.","Emerging":"Map AI literacy opportunities across at least three subjects.","Developing":"Align your curriculum explicitly with the OECD AILit Framework's four domains.","Advanced":"Document your approach as a case study for wider sector sharing."},student:{"Early stage":"Introduce one classroom discussion on what AI is and how it works.","Emerging":"Build a short cross-curricular unit on critically evaluating AI output.","Developing":"Embed AI ethics discussions consistently across PSHE and relevant subjects.","Advanced":"Create student-led AI literacy initiatives such as peer workshops."}};return R[k][bl]||"Continue building consistent practice in this area."}
-function ren(){const A=document.getElementById("app");if(S.sc==="intro")A.innerHTML=rI();else if(S.sc==="quiz")A.innerHTML=rQ();else A.innerHTML=rR()}
-function rI(){return`<header class="top"><div class="eyebrow">Free diagnostic tool</div><h1>School AI Readiness Assessment</h1><p class="subtitle">A 15-question diagnostic for school and system leaders to evaluate readiness for AI integration across five dimensions — and get a tailored action plan in under five minutes.</p></header><div class="dims-list">${D.map((d,i)=>`<div class="dim-chip"><div class="num">0${i+1}</div><div class="name">${d.n}</div></div>`).join("")}</div><p class="hint">Takes about 5 minutes. Answers are not stored or sent anywhere — everything runs in your browser.</p><button class="start-btn" onclick="sQ()">Begin assessment →</button>`}
-function sQ(){S.sc="quiz";S.c=0;ren()}
-function rQ(){const q=Q[S.c];const p=Math.round((S.c/Q.length)*100);const s=S.a[S.c];return`<header class="top"><div class="eyebrow">School AI Readiness Assessment</div><h1 style="font-size:24px;">Question ${S.c+1} of ${Q.length}</h1></header><div class="progress-track"><div class="progress-fill" style="width:${p}%"></div></div><div class="question-card"><div class="dim-label">${q.dn}</div><p class="question-text">${q.t}</p><div class="options">${q.o.map((o,i)=>`<div class="option ${s===i?"selected":""}" onclick="sA(${i})"><span class="radio"></span><span class="label-text">${o.l}</span></div>`).join("")}</div></div><div class="nav-row"><button class="secondary" onclick="pQ()" ${S.c===0?"disabled":""}>← Back</button><button onclick="nQ()" ${s===null?"disabled":""}>${S.c===Q.length-1?"See my results →":"Next →"}</button></div>`}
-function sA(i){S.a[S.c]=i;ren()}
-function nQ(){if(S.c===Q.length-1){S.sc="results"}else{S.c++}ren()}
-function pQ(){if(S.c>0){S.c--;ren()}}
-function cR(){const ds=D.map(d=>{const qi=Q.map((q,i)=>({q,i})).filter(x=>x.q.dk===d.k).map(x=>x.i);const t=qi.reduce((s,i)=>{const ai=S.a[i];return s+Q[i].o[ai].s},0);const a=t/qi.length;return{k:d.k,n:d.n,a:a}});const o=ds.reduce((s,d)=>s+d.a,0)/ds.length;return{ds,o}}
-function rR(){const cr=cR();const b=gB(cr.o);const so=[...cr.ds].sort((a,b)=>a.a-b.a);const w=so.slice(0,2);return`<header class="top"><div class="eyebrow">Your results</div><h1>AI Readiness Report</h1><p class="subtitle">Based on your answers across five dimensions of school AI readiness.</p></header><div class="score-hero"><div class="score-big">${cr.o.toFixed(1)}<span style="font-size:24px;color:var(--slate);"> / 3.0</span></div><div class="score-band" style="color:${b.c};background:${b.bg}">${b.l}</div><p style="max-width:48ch;margin:16px auto 0;color:var(--slate);font-size:15px;">${b.d}</p></div><div class="report-section"><h2>Readiness by dimension</h2><div class="dim-results">${cr.ds.map(d=>{const b2=gB(d.a);const p=(d.a/3)*100;return`<div class="dim-row"><div class="dim-row-top"><span class="dim-row-name">${d.n}</span><span class="dim-row-score">${d.a.toFixed(1)} / 3.0</span></div><div class="bar-track"><div class="bar-fill" style="width:${p}%;background:${b2.c};"></div></div><div class="dim-row-rec">${b2.l} — ${rF(d.k,b2.l)}</div></div>`}).join("")}</div></div><div class="report-section"><h2>Where to focus first</h2><ul class="next-steps">${w.map(d=>`<li><strong>${d.n}:</strong> ${rF(d.k,gB(d.a).l)}</li>`).join("")}<li><strong>General:</strong> Share this report with your leadership team and revisit the assessment again in 6 months to track progress.</li></ul></div><div class="actions-row"><button onclick="window.print()">Save as PDF</button><button class="secondary" onclick="res()">Retake assessment</button></div><footer class="credit">School AI Readiness Assessment — a free open diagnostic tool. Built to help school leaders move from AI anxiety to AI action.</footer>`}
-function res(){S={sc:"intro",c:0,a:new Array(Q.length).fill(null)};ren()}
-ren();
+// ───────────────────────────────────────────
+// DATA: 5 dimensions × 3 questions = 15 questions
+// Each option has a score 0-3
+// ───────────────────────────────────────────
+const DIMENSIONS = [
+  {
+    key: "infra",
+    name: "Infrastructure & access",
+    questions: [
+      {
+        text: "How would you describe device and internet access for students at your school?",
+        options: [
+          { label: "Inconsistent — many students lack reliable devices or connectivity", score: 0 },
+          { label: "Basic — shared devices available but limited", score: 1 },
+          { label: "Good — most students have regular access", score: 2 },
+          { label: "Excellent — 1:1 devices with reliable connectivity for all", score: 3 }
+        ]
+      },
+      {
+        text: "Does your school currently provide access to any AI tools for staff or students?",
+        options: [
+          { label: "No AI tools are currently provided", score: 0 },
+          { label: "A few staff use personal AI tools informally", score: 1 },
+          { label: "Some approved tools are available to certain groups", score: 2 },
+          { label: "A range of vetted AI tools is available school-wide", score: 3 }
+        ]
+      },
+      {
+        text: "How equipped is your IT infrastructure to support AI tool integration (data security, system compatibility)?",
+        options: [
+          { label: "Not assessed or known to be inadequate", score: 0 },
+          { label: "Some gaps identified, no plan yet", score: 1 },
+          { label: "Mostly adequate, minor gaps", score: 2 },
+          { label: "Fully assessed and AI-ready", score: 3 }
+        ]
+      }
+    ]
+  },
+  {
+    key: "staff",
+    name: "Staff AI literacy",
+    questions: [
+      {
+        text: "How confident are teachers, on average, in understanding what AI is and how it works?",
+        options: [
+          { label: "Most staff have little to no understanding", score: 0 },
+          { label: "Basic awareness, but limited practical understanding", score: 1 },
+          { label: "Good general understanding across most staff", score: 2 },
+          { label: "Strong, confident understanding school-wide", score: 3 }
+        ]
+      },
+      {
+        text: "Has your school provided any AI-related professional development for staff?",
+        options: [
+          { label: "No training has been offered", score: 0 },
+          { label: "One-off session or optional resources only", score: 1 },
+          { label: "Some structured training for interested staff", score: 2 },
+          { label: "Ongoing, mandatory professional development programme", score: 3 }
+        ]
+      },
+      {
+        text: "How are teachers currently using AI in their own planning or workload?",
+        options: [
+          { label: "Not at all, or actively discouraged", score: 0 },
+          { label: "A few individuals experiment informally", score: 1 },
+          { label: "Many staff use it regularly for planning support", score: 2 },
+          { label: "Embedded as standard practice with clear guidance", score: 3 }
+        ]
+      }
+    ]
+  },
+  {
+    key: "policy",
+    name: "Policy & governance",
+    questions: [
+      {
+        text: "Does your school have a written AI use policy?",
+        options: [
+          { label: "No policy exists", score: 0 },
+          { label: "Informal guidance only, nothing written", score: 1 },
+          { label: "A draft policy exists but isn't finalised", score: 2 },
+          { label: "A clear, communicated policy is in place", score: 3 }
+        ]
+      },
+      {
+        text: "How does your school currently handle data privacy concerns related to AI tools?",
+        options: [
+          { label: "Not yet considered", score: 0 },
+          { label: "Aware of the issue, no formal process", score: 1 },
+          { label: "Some vetting process exists for new tools", score: 2 },
+          { label: "Robust, documented data governance process", score: 3 }
+        ]
+      },
+      {
+        text: "How clear are your academic integrity guidelines regarding AI use by students?",
+        options: [
+          { label: "No guidance exists", score: 0 },
+          { label: "Informal expectations, not documented", score: 1 },
+          { label: "Written guidance exists for some subjects", score: 2 },
+          { label: "Clear, consistent guidance across the school", score: 3 }
+        ]
+      }
+    ]
+  },
+  {
+    key: "curriculum",
+    name: "Curriculum integration",
+    questions: [
+      {
+        text: "Is AI literacy currently taught anywhere in your curriculum?",
+        options: [
+          { label: "Not addressed anywhere", score: 0 },
+          { label: "Touched on briefly in one subject or assembly", score: 1 },
+          { label: "Integrated into a few subjects", score: 2 },
+          { label: "Embedded across multiple subjects and year groups", score: 3 }
+        ]
+      },
+      {
+        text: "How are AI tools being used to support teaching and learning in lessons?",
+        options: [
+          { label: "Not used in lessons at all", score: 0 },
+          { label: "Occasional, individual teacher experimentation", score: 1 },
+          { label: "Used regularly in several subject areas", score: 2 },
+          { label: "Thoughtfully integrated as a teaching tool school-wide", score: 3 }
+        ]
+      },
+      {
+        text: "Does your school have a plan to align AI literacy teaching with frameworks such as the OECD AILit Framework?",
+        options: [
+          { label: "Not aware of such frameworks", score: 0 },
+          { label: "Aware, but no plan to align", score: 1 },
+          { label: "Beginning to explore alignment", score: 2 },
+          { label: "Actively aligning curriculum to a recognised framework", score: 3 }
+        ]
+      }
+    ]
+  },
+  {
+    key: "student",
+    name: "Student AI literacy",
+    questions: [
+      {
+        text: "How would you describe students' current understanding of how AI systems work?",
+        options: [
+          { label: "Very limited understanding", score: 0 },
+          { label: "Basic awareness from informal use", score: 1 },
+          { label: "Reasonable understanding for most students", score: 2 },
+          { label: "Strong, critical understanding across year groups", score: 3 }
+        ]
+      },
+      {
+        text: "Are students taught to critically evaluate AI-generated content?",
+        options: [
+          { label: "Not taught at all", score: 0 },
+          { label: "Mentioned occasionally, not formally taught", score: 1 },
+          { label: "Taught in some subjects or year groups", score: 2 },
+          { label: "Consistently taught as a core skill", score: 3 }
+        ]
+      },
+      {
+        text: "Do students have opportunities to discuss the ethical and societal implications of AI?",
+        options: [
+          { label: "No such opportunities exist", score: 0 },
+          { label: "Occasional, informal discussion", score: 1 },
+          { label: "Built into some subjects (e.g. PSHE, citizenship)", score: 2 },
+          { label: "Regular, structured opportunities across the curriculum", score: 3 }
+        ]
+      }
+    ]
+  }
+];
+
+const BANDS = [
+  { min: 0,  max: 0.99, label: "Early stage",     color: "var(--low)",  desc: "Your school is at the very beginning of its AI journey. This is a completely normal starting point — the goal now is building foundational awareness and a simple first policy." },
+  { min: 1,  max: 1.74, label: "Emerging",        color: "var(--mid)",  desc: "Pockets of activity exist but lack coordination. The priority is connecting these efforts under a shared plan." },
+  { min: 1.75, max: 2.49, label: "Developing",     color: "var(--mid)",  desc: "Solid foundations are in place across most areas. Focus now on consistency and embedding practice school-wide." },
+  { min: 2.5, max: 3,   label: "Advanced",        color: "var(--good)", desc: "Your school is well-positioned on AI readiness. The focus now is refinement, evaluation, and sharing practice with others." }
+];
+
+function getBand(score) {
+  return BANDS.find(b => score >= b.min && score <= b.max) || BANDS[0];
+}
+
+// ───────────────────────────────────────────
+// STATE
+// ───────────────────────────────────────────
+const allQuestions = DIMENSIONS.flatMap(d =>
+  d.questions.map(q => ({ ...q, dimKey: d.key, dimName: d.name }))
+);
+
+let state = {
+  screen: "intro", // intro | quiz | results
+  current: 0,
+  answers: new Array(allQuestions.length).fill(null)
+};
+
+function render() {
+  const app = document.getElementById("app");
+  if (state.screen === "intro") app.innerHTML = renderIntro();
+  else if (state.screen === "quiz") app.innerHTML = renderQuiz();
+  else app.innerHTML = renderResults();
+}
+
+function renderIntro() {
+  return `
+    <header class="top">
+      <div class="eyebrow">Free diagnostic tool</div>
+      <h1>School AI Readiness Assessment</h1>
+      <p class="subtitle">A 15-question diagnostic for school and system leaders to evaluate readiness for AI integration across five dimensions — and get a tailored action plan in under five minutes.</p>
+    </header>
+
+    <div class="dims-list">
+      ${DIMENSIONS.map((d, i) => `
+        <div class="dim-chip">
+          <div class="num">0${i+1}</div>
+          <div class="name">${d.name}</div>
+        </div>
+      `).join("")}
+    </div>
+
+    <p style="color:var(--slate); font-size:14px;">Takes about 5 minutes. Answers are not stored or sent anywhere — everything runs in your browser.</p>
+
+    <button class="start-btn" onclick="startQuiz()">Begin assessment →</button>
+  `;
+}
+
+function startQuiz() {
+  state.screen = "quiz";
+  state.current = 0;
+  render();
+}
+
+function renderQuiz() {
+  const q = allQuestions[state.current];
+  const pct = Math.round(((state.current) / allQuestions.length) * 100);
+  const selected = state.answers[state.current];
+
+  return `
+    <header class="top">
+      <div class="eyebrow">School AI Readiness Assessment</div>
+      <h1 style="font-size:24px;">Question ${state.current + 1} of ${allQuestions.length}</h1>
+    </header>
+
+    <div class="progress-track"><div class="progress-fill" style="width:${pct}%"></div></div>
+
+    <div class="question-card">
+      <div class="dim-label">${q.dimName}</div>
+      <p class="question-text">${q.text}</p>
+      <div class="options">
+        ${q.options.map((opt, i) => `
+          <div class="option ${selected === i ? 'selected' : ''}" onclick="selectAnswer(${i})">
+            ${opt.label}
+          </div>
+        `).join("")}
+      </div>
+    </div>
+
+    <div class="nav-row">
+      <button class="secondary" onclick="prevQuestion()" ${state.current === 0 ? "disabled" : ""}>← Back</button>
+      <button onclick="nextQuestion()" ${selected === null ? "disabled" : ""}>
+        ${state.current === allQuestions.length - 1 ? "See my results →" : "Next →"}
+      </button>
+    </div>
+  `;
+}
+
+function selectAnswer(i) {
+  state.answers[state.current] = i;
+  render();
+}
+
+function nextQuestion() {
+  if (state.current === allQuestions.length - 1) {
+    state.screen = "results";
+  } else {
+    state.current++;
+  }
+  render();
+}
+
+function prevQuestion() {
+  if (state.current > 0) {
+    state.current--;
+    render();
+  }
+}
+
+function computeResults() {
+  const dimScores = DIMENSIONS.map(d => {
+    const qIndexes = allQuestions
+      .map((q, i) => ({ q, i }))
+      .filter(x => x.q.dimKey === d.key)
+      .map(x => x.i);
+
+    const total = qIndexes.reduce((sum, i) => {
+      const ansIdx = state.answers[i];
+      return sum + allQuestions[i].options[ansIdx].score;
+    }, 0);
+    const avg = total / qIndexes.length; // 0-3
+
+    return { key: d.key, name: d.name, avg };
+  });
+
+  const overall = dimScores.reduce((s, d) => s + d.avg, 0) / dimScores.length;
+  return { dimScores, overall };
+}
+
+function renderResults() {
+  const { dimScores, overall } = computeResults();
+  const band = getBand(overall);
+  const sorted = [...dimScores].sort((a, b) => a.avg - b.avg);
+  const weakest = sorted.slice(0, 2);
+
+  return `
+    <header class="top">
+      <div class="eyebrow">Your results</div>
+      <h1>AI Readiness Report</h1>
+      <p class="subtitle">Based on your answers across five dimensions of school AI readiness.</p>
+    </header>
+
+    <div class="score-hero">
+      <div class="score-big">${overall.toFixed(1)}<span style="font-size:24px;color:var(--slate);"> / 3.0</span></div>
+      <div class="score-band" style="color:${band.color}">${band.label}</div>
+      <p style="max-width:48ch;margin:14px auto 0;color:var(--slate);font-size:15px;">${band.desc}</p>
+    </div>
+
+    <div class="report-section">
+      <h2>Readiness by dimension</h2>
+      <div class="dim-results">
+        ${dimScores.map(d => {
+          const b = getBand(d.avg);
+          const pct = (d.avg / 3) * 100;
+          return `
+            <div class="dim-row">
+              <div class="dim-row-top">
+                <span class="dim-row-name">${d.name}</span>
+                <span class="dim-row-score">${d.avg.toFixed(1)} / 3.0</span>
+              </div>
+              <div class="bar-track"><div class="bar-fill" style="width:${pct}%; background:${b.color};"></div></div>
+              <div class="dim-row-rec">${b.label} — ${recommendationFor(d.key, b.label)}</div>
+            </div>
+          `;
+        }).join("")}
+      </div>
+    </div>
+
+    <div class="report-section">
+      <h2>Where to focus first</h2>
+      <ul class="next-steps">
+        ${weakest.map(d => `<li><strong>${d.name}:</strong> ${recommendationFor(d.key, getBand(d.avg).label)}</li>`).join("")}
+        <li><strong>General:</strong> Share this report with your leadership team and revisit the assessment again in 6 months to track progress.</li>
+      </ul>
+    </div>
+
+    <div class="actions-row">
+      <button onclick="window.print()">Save as PDF</button>
+      <button class="secondary" onclick="restart()">Retake assessment</button>
+    </div>
+
+    <footer class="credit">
+      School AI Readiness Assessment — a free open diagnostic tool. Built to help school leaders move from AI anxiety to AI action.
+    </footer>
+  `;
+}
+
+function recommendationFor(key, bandLabel) {
+  const recs = {
+    infra: {
+      "Early stage": "Start by mapping current device and connectivity gaps across the school.",
+      "Emerging": "Pilot one or two vetted AI tools with a small staff group before wider rollout.",
+      "Developing": "Formalise an approved tools list and review data security with IT.",
+      "Advanced": "Document your infrastructure approach so it can be shared with other schools."
+    },
+    staff: {
+      "Early stage": "Run a single introductory AI session for all staff this term.",
+      "Emerging": "Identify 2-3 AI champions per department to lead informal peer training.",
+      "Developing": "Move from optional to structured, ongoing professional development.",
+      "Advanced": "Consider mentoring other schools or leading a local training network."
+    },
+    policy: {
+      "Early stage": "Draft a one-page interim AI use policy this month as a starting point.",
+      "Emerging": "Finalise and formally communicate a written policy to all stakeholders.",
+      "Developing": "Review your policy against the EU AI Act and OECD guidance for gaps.",
+      "Advanced": "Publish your policy as a model for other schools in your network."
+    },
+    curriculum: {
+      "Early stage": "Identify one subject area to pilot AI literacy content this term.",
+      "Emerging": "Map AI literacy opportunities across at least three subjects.",
+      "Developing": "Align your curriculum explicitly with the OECD AILit Framework's four domains.",
+      "Advanced": "Document your approach as a case study for wider sector sharing."
+    },
+    student: {
+      "Early stage": "Introduce one classroom discussion on what AI is and how it works.",
+      "Emerging": "Build a short cross-curricular unit on critically evaluating AI output.",
+      "Developing": "Embed AI ethics discussions consistently across PSHE and relevant subjects.",
+      "Advanced": "Create student-led AI literacy initiatives such as peer workshops."
+    }
+  };
+  return recs[key][bandLabel] || "Continue building consistent practice in this area.";
+}
+
+function restart() {
+  state = { screen: "intro", current: 0, answers: new Array(allQuestions.length).fill(null) };
+  render();
+}
+
+render();
 </script>
 </body>
 </html>

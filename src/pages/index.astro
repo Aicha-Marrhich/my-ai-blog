@@ -1,5 +1,8 @@
 ---
-const posts = Object.values(import.meta.glob('./blog/*.md', { eager: true }));
+import { getCollection } from 'astro:content';
+
+const allPosts = await getCollection('blog');
+const posts = allPosts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 ---
 
 <html lang="en">
@@ -762,16 +765,16 @@ const posts = Object.values(import.meta.glob('./blog/*.md', { eager: true }));
       </div>
       
       <div class="bento-grid">
-        {posts.slice(0, 1).map((post: any) => (
+        {posts.slice(0, 1).map((post) => (
           <article class="bento-card featured">
-            <a href={post.url} class="bento-link"></a>
+            <a href={`/blog/${post.slug}/`} class="bento-link"></a>
             <span class="bento-tag">Latest</span>
-            <h3 class="bento-title">{post.frontmatter.title}</h3>
-            <p class="bento-desc">{post.frontmatter.description}</p>
+            <h3 class="bento-title">{post.data.title}</h3>
+            <p class="bento-desc">{post.data.description}</p>
             <div class="bento-meta">
-              <span>{post.frontmatter.pubDate}</span>
+              <span>{post.data.pubDate.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}</span>
               <span>·</span>
-              <span>{post.frontmatter.tags?.[0] || 'Research'}</span>
+              <span>{post.data.tags?.[0] || 'Research'}</span>
             </div>
           </article>
         ))}
@@ -788,14 +791,14 @@ const posts = Object.values(import.meta.glob('./blog/*.md', { eager: true }));
           </div>
         </article>
         
-        {posts.slice(1, 4).map((post: any) => (
+        {posts.slice(1, 4).map((post) => (
           <article class="bento-card">
-            <a href={post.url} class="bento-link"></a>
-            <span class="bento-tag">{post.frontmatter.tags?.[0] || 'Research'}</span>
-            <h3 class="bento-title">{post.frontmatter.title}</h3>
-            <p class="bento-desc">{post.frontmatter.description}</p>
+            <a href={`/blog/${post.slug}/`} class="bento-link"></a>
+            <span class="bento-tag">{post.data.tags?.[0] || 'Research'}</span>
+            <h3 class="bento-title">{post.data.title}</h3>
+            <p class="bento-desc">{post.data.description}</p>
             <div class="bento-meta">
-              <span>{post.frontmatter.pubDate}</span>
+              <span>{post.data.pubDate.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}</span>
               <span>·</span>
               <span>5 min read</span>
             </div>
@@ -840,21 +843,6 @@ const posts = Object.values(import.meta.glob('./blog/*.md', { eager: true }));
             <span>Personalized result</span>
           </div>
         </article>
-
-        <!-- Add more tools here as you create them -->
-        <!-- 
-        <article class="bento-card tool-card">
-          <a href="/your-new-tool" class="bento-link"></a>
-          <span class="bento-tag">New Tool</span>
-          <h3 class="bento-title">Your New Tool Name</h3>
-          <p class="bento-desc">Short description of what this tool does.</p>
-          <div class="bento-meta">
-            <span>Type</span>
-            <span>·</span>
-            <span>Time</span>
-          </div>
-        </article>
-        -->
       </div>
     </section>
 

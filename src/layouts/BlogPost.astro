@@ -277,7 +277,17 @@ const formattedDate = date.toLocaleDateString("en-GB", {
       transition: background .15s;
     }
     .share-btn:hover { background: #2C3E5A; }
-
+    /* Images dans l'article */
+    .article-body :global(img) {
+      max-width: 100%;
+      width: auto;
+      max-height: 350px;
+      height: auto;
+      border-radius: 8px;
+      margin: 2em auto;
+      display: block;
+      object-fit: cover;
+    }
     @media (max-width: 600px) {
       .article-header { padding: 36px 20px 36px; }
       .article-body { padding: 40px 20px 60px; }
